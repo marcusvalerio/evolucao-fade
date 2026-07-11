@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import {
   LayoutGrid, BookOpen, ClipboardList, Package, GraduationCap,
   Compass, Coffee, Settings2, Megaphone, Building2, FlaskConical,
@@ -21,7 +22,14 @@ const NAV_ITEMS = [
   { to: '/evolucao', label: 'Minha Evolução', icon: TrendingUp },
 ]
 
+function isActivePath(pathname, to, end) {
+  if (end) return pathname === to
+  return pathname === to || pathname.startsWith(to + '/')
+}
+
 export default function Sidebar({ open, onClose }) {
+  const { pathname } = useLocation()
+
   return (
     <>
       {open && (
@@ -50,24 +58,42 @@ export default function Sidebar({ open, onClose }) {
         </div>
 
         <nav className="flex-1 overflow-y-auto px-3 pb-6 space-y-0.5">
-          {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              onClick={onClose}
-              className={({ isActive }) =>
-                `group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors duration-300 focus-ring ${
-                  isActive
-                    ? 'bg-imperio-tint text-imperio-dark dark:bg-imperio/20 dark:text-imperio-light'
-                    : 'text-graphite-700 dark:text-graphite-300 hover:bg-graphite-100/60 dark:hover:bg-graphite-700/40'
-                }`
-              }
-            >
-              <Icon size={17} strokeWidth={1.75} className="shrink-0" />
-              <span className="truncate">{label}</span>
-            </NavLink>
-          ))}
+          {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => {
+            const active = isActivePath(pathname, to, end)
+            return (
+              <NavLink
+                key={to}
+                to={to}
+                end={end}
+                onClick={onClose}
+                className="relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium focus-ring"
+              >
+                {active && (
+                  <motion.span
+                    layoutId="nav-active-pill"
+                    className="absolute inset-0 rounded-xl bg-imperio-tint dark:bg-imperio/20"
+                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  />
+                )}
+                <Icon
+                  size={17}
+                  strokeWidth={1.75}
+                  className={`relative shrink-0 transition-colors duration-300 ${
+                    active ? 'text-imperio-dark dark:text-imperio-light' : 'text-graphite-700 dark:text-graphite-300'
+                  }`}
+                />
+                <span
+                  className={`relative truncate transition-colors duration-300 ${
+                    active
+                      ? 'text-imperio-dark dark:text-imperio-light'
+                      : 'text-graphite-700 dark:text-graphite-300 hover:text-graphite-900 dark:hover:text-cream'
+                  }`}
+                >
+                  {label}
+                </span>
+              </NavLink>
+            )
+          })}
         </nav>
 
         <div className="px-6 py-5 border-t border-graphite-100 dark:border-graphite-700">

@@ -67,3 +67,46 @@ export const seedObservations = [
     promovidoAIdeia: false,
   },
 ]
+
+export const ETAPAS_PLAYBOOK = [
+  'Primeiro atendimento', 'Recepção', 'Venda consultiva', 'Uso de pomadas',
+  'Finalização', 'Feedback', 'Contratação', 'Onboarding', 'Desligamento', 'Treinamentos',
+]
+
+export const seedPlaybooks = [
+  {
+    id: 'pb-demo-1',
+    titulo: 'Exemplo — Playbook de Recepção',
+    etapa: 'Recepção',
+    quandoUsar: 'Sempre que um cliente entra na unidade, agendado ou não.',
+    responsavel: 'Recepcionista / Barbeiro disponível',
+    passos: [
+      'Cumprimentar o cliente pelo nome em até 10 segundos após a entrada',
+      'Confirmar o serviço agendado ou entender a necessidade',
+      'Oferecer água ou café',
+      'Acompanhar até a estação designada',
+    ],
+    checklist: ['Cliente cumprimentado', 'Bebida oferecida', 'Tempo de espera comunicado'],
+    errosComuns: 'Deixar o cliente parado sem contato visual nos primeiros segundos.',
+    ultimaAtualizacao: new Date().toISOString().slice(0, 10),
+  },
+]
+
+export const CATEGORIAS_PRODUTO = ['Pomada', 'Shampoo', 'Óleo de barba', 'Finalizador', 'Acessório']
+
+export const seedProdutos = [
+  {
+    id: 'prod-demo-1',
+    nome: 'Exemplo — Pomada Matte FADE',
+    categoria: 'Pomada',
+    descricao: 'Modelo de ficha técnica. Edite ou exclua e cadastre os produtos reais da FADE.',
+    ingredientes: 'Cera de abelha, óleo de rícino, manteiga de karité (exemplo).',
+    comoUtilizar: 'Aplicar pequena quantidade nas mãos, aquecer e distribuir dos fios às pontas.',
+    comoVender: 'Indicar durante a finalização do corte, associando ao estilo trabalhado na sessão.',
+    indicacao: 'Cabelos curtos a médios, efeito matte de longa duração.',
+    contraindicacoes: 'Evitar em couro cabeludo com dermatite ativa.',
+    fragrancia: 'Amadeirada, leve.',
+    referenciaOficial: '—',
+    ultimaAtualizacao: new Date().toISOString().slice(0, 10),
+  },
+]

@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, MapPin, Star, Lightbulb, X, ImageOff } from 'lucide-react'
 import { CATEGORIAS_OBSERVACAO } from '../data/seed.js'
+import { pageVariants, Reveal, RevealItem, cardHover } from '../components/motion.jsx'
 
 const emptyForm = {
   local: '', cidade: '', categoria: CATEGORIAS_OBSERVACAO[0], nota: 3,
@@ -58,7 +60,7 @@ export default function ObservacoesDeCampo({ observations, setObservations }) {
   }
 
   return (
-    <div className="fade-in space-y-7">
+    <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="space-y-7">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <p className="eyebrow mb-2">Referências de campo</p>
@@ -73,8 +75,16 @@ export default function ObservacoesDeCampo({ observations, setObservations }) {
         </button>
       </div>
 
-      {showForm && (
-        <form onSubmit={handleSubmit} className="card p-6 space-y-5 fade-in">
+      <AnimatePresence>
+        {showForm && (
+          <motion.form
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="card p-6 space-y-5 overflow-hidden"
+          >
           <div className="grid sm:grid-cols-2 gap-5">
             <Field label="Local">
               <input required className="input" value={form.local} onChange={(e) => update('local', e.target.value)} />
@@ -130,8 +140,9 @@ export default function ObservacoesDeCampo({ observations, setObservations }) {
           </Field>
 
           <button type="submit" className="btn-primary">Salvar observação</button>
-        </form>
-      )}
+          </motion.form>
+        )}
+      </AnimatePresence>
 
       <div className="flex flex-wrap gap-2">
         <select value={filterCidade} onChange={(e) => setFilterCidade(e.target.value)} className="input !w-auto py-2">
@@ -157,9 +168,10 @@ export default function ObservacoesDeCampo({ observations, setObservations }) {
         </section>
       )}
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <Reveal className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" key={filtered.length + filterCidade + filterCategoria}>
         {filtered.map((o) => (
-          <div key={o.id} className="card overflow-hidden flex flex-col">
+          <RevealItem key={o.id} {...cardHover}>
+            <div className="card overflow-hidden flex flex-col h-full">
             {o.fotos?.length > 0 ? (
               <img src={o.fotos[0]} alt={o.local} className="h-36 w-full object-cover" />
             ) : (
@@ -190,10 +202,11 @@ export default function ObservacoesDeCampo({ observations, setObservations }) {
                 <Lightbulb size={13} /> {o.promovidoAIdeia ? 'Na lista de ideias' : 'Transformar em ideia'}
               </button>
             </div>
-          </div>
+            </div>
+          </RevealItem>
         ))}
-      </div>
-    </div>
+      </Reveal>
+    </motion.div>
   )
 }
 

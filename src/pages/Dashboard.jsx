@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { BookOpen, MapPinned, ArrowRight, Sparkles } from 'lucide-react'
+import { pageVariants, Reveal, RevealItem, cardHover } from '../components/motion.jsx'
 
 function timeAgo(dateStr) {
   const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000)
@@ -20,31 +22,29 @@ export default function Dashboard({ articles, observations }) {
   const saudacao = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite'
 
   return (
-    <div className="fade-in space-y-10">
-      <div>
+    <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="space-y-10">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
         <p className="eyebrow mb-2">{saudacao}</p>
         <h1 className="font-display text-4xl sm:text-5xl tracking-wide text-graphite-900 dark:text-cream">
           O que você quer evoluir hoje?
         </h1>
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <Reveal className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { to: '/biblioteca', label: 'Biblioteca', icon: BookOpen },
           { to: '/observacoes', label: 'Observações', icon: MapPinned },
           { to: '/evolucao', label: 'Minha Evolução', icon: Sparkles },
           { to: '/playbooks', label: 'Playbooks', icon: ArrowRight },
         ].map(({ to, label, icon: Icon }) => (
-          <Link
-            key={to}
-            to={to}
-            className="card p-5 flex flex-col gap-3 hover:shadow-soft hover:-translate-y-0.5 transition-all duration-300 ease-smooth"
-          >
-            <Icon size={18} className="text-imperio" strokeWidth={1.75} />
-            <span className="text-sm font-medium">{label}</span>
-          </Link>
+          <RevealItem key={to} {...cardHover}>
+            <Link to={to} className="card p-5 flex flex-col gap-3 h-full">
+              <Icon size={18} className="text-imperio" strokeWidth={1.75} />
+              <span className="text-sm font-medium">{label}</span>
+            </Link>
+          </RevealItem>
         ))}
-      </div>
+      </Reveal>
 
       <div className="grid md:grid-cols-2 gap-8">
         <section>
@@ -100,6 +100,6 @@ export default function Dashboard({ articles, observations }) {
           Acompanhe o que já aprendeu e o que falta em <Link to="/evolucao" className="text-imperio hover:underline">Minha Evolução</Link>.
         </p>
       </section>
-    </div>
+    </motion.div>
   )
 }

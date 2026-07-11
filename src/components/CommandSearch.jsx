@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, BookOpen, MapPinned, CornerDownLeft } from 'lucide-react'
+import { Search, BookOpen, MapPinned, ClipboardList, Package, CornerDownLeft } from 'lucide-react'
 
-export default function CommandSearch({ open, onClose, articles, observations }) {
+export default function CommandSearch({ open, onClose, articles, observations, playbooks = [], produtos = [] }) {
   const [query, setQuery] = useState('')
   const inputRef = useRef(null)
   const navigate = useNavigate()
@@ -35,15 +35,21 @@ export default function CommandSearch({ open, onClose, articles, observations })
       o.cidade.toLowerCase().includes(q) ||
       o.categoria.toLowerCase().includes(q) ||
       o.gostei.toLowerCase().includes(q)
+    const matchPlaybook = (p) =>
+      p.titulo.toLowerCase().includes(q) || p.etapa.toLowerCase().includes(q)
+    const matchProduto = (p) =>
+      p.nome.toLowerCase().includes(q) || p.categoria.toLowerCase().includes(q)
     return {
-      articles: articles.filter(matchArticle).slice(0, 6),
-      observations: observations.filter(matchObs).slice(0, 6),
+      articles: articles.filter(matchArticle).slice(0, 5),
+      observations: observations.filter(matchObs).slice(0, 4),
+      playbooks: playbooks.filter(matchPlaybook).slice(0, 4),
+      produtos: produtos.filter(matchProduto).slice(0, 4),
     }
-  }, [query, articles, observations])
+  }, [query, articles, observations, playbooks, produtos])
 
   if (!open) return null
 
-  const hasResults = results.articles.length > 0 || results.observations.length > 0
+  const hasResults = results.articles.length > 0 || results.observations.length > 0 || results.playbooks.length > 0 || results.produtos.length > 0
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[12vh] px-4 bg-graphite-900/40 backdrop-blur-sm fade-in" onClick={onClose}>
@@ -111,6 +117,46 @@ export default function CommandSearch({ open, onClose, articles, observations })
                   <span className="flex-1 min-w-0">
                     <span className="block text-sm font-medium truncate">{o.local}</span>
                     <span className="block text-xs text-graphite-500 truncate">{o.cidade} · {o.categoria}</span>
+                  </span>
+                  <CornerDownLeft size={13} className="opacity-0 group-hover:opacity-50 shrink-0" />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {results.playbooks.length > 0 && (
+            <div>
+              <p className="eyebrow px-3 py-2">Playbooks</p>
+              {results.playbooks.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => { navigate(`/playbooks/${p.id}`); onClose() }}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left hover:bg-imperio-tint dark:hover:bg-imperio/10 transition-colors duration-200 group"
+                >
+                  <ClipboardList size={16} className="text-imperio shrink-0" />
+                  <span className="flex-1 min-w-0">
+                    <span className="block text-sm font-medium truncate">{p.titulo}</span>
+                    <span className="block text-xs text-graphite-500 truncate">{p.etapa}</span>
+                  </span>
+                  <CornerDownLeft size={13} className="opacity-0 group-hover:opacity-50 shrink-0" />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {results.produtos.length > 0 && (
+            <div>
+              <p className="eyebrow px-3 py-2">Produtos</p>
+              {results.produtos.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => { navigate(`/produtos/${p.id}`); onClose() }}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left hover:bg-imperio-tint dark:hover:bg-imperio/10 transition-colors duration-200 group"
+                >
+                  <Package size={16} className="text-leather shrink-0" />
+                  <span className="flex-1 min-w-0">
+                    <span className="block text-sm font-medium truncate">{p.nome}</span>
+                    <span className="block text-xs text-graphite-500 truncate">{p.categoria}</span>
                   </span>
                   <CornerDownLeft size={13} className="opacity-0 group-hover:opacity-50 shrink-0" />
                 </button>
