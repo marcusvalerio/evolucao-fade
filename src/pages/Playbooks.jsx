@@ -14,7 +14,7 @@ export default function Playbooks({ playbooks }) {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <p className="eyebrow mb-2">Procedimentos da FADE</p>
-          <h1 className="font-display text-4xl tracking-wide">Playbooks</h1>
+          <h1 className="font-display text-3xl sm:text-4xl tracking-wide">Playbooks</h1>
           <p className="text-sm text-graphite-500 mt-2 max-w-lg">
             Cada procedimento — do primeiro atendimento ao desligamento — documentado passo a passo.
           </p>

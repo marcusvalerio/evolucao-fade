@@ -25,7 +25,7 @@ export default function Dashboard({ articles, observations }) {
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="space-y-10">
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
         <p className="eyebrow mb-2">{saudacao}</p>
-        <h1 className="font-display text-4xl sm:text-5xl tracking-wide text-graphite-900 dark:text-cream">
+        <h1 className="font-display text-3xl sm:text-5xl tracking-wide text-graphite-900 dark:text-cream">
           O que você quer evoluir hoje?
         </h1>
       </motion.div>

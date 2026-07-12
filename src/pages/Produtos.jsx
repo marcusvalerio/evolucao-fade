@@ -14,7 +14,7 @@ export default function Produtos({ produtos }) {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <p className="eyebrow mb-2">Ficha técnica</p>
-          <h1 className="font-display text-4xl tracking-wide">Produtos</h1>
+          <h1 className="font-display text-3xl sm:text-4xl tracking-wide">Produtos</h1>
           <p className="text-sm text-graphite-500 mt-2 max-w-lg">
             Descrição, ingredientes, indicação e como vender cada produto da FADE.
           </p>

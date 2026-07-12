@@ -13,7 +13,7 @@ export default function CategoriaModulo({ categoria, titulo, descricao, icon: Ic
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <p className="eyebrow mb-2 flex items-center gap-1.5">{Icon && <Icon size={12} />} Módulo</p>
-          <h1 className="font-display text-4xl tracking-wide">{titulo}</h1>
+          <h1 className="font-display text-3xl sm:text-4xl tracking-wide">{titulo}</h1>
           <p className="text-sm text-graphite-500 mt-2 max-w-lg">{descricao}</p>
         </div>
         <Link to="/biblioteca/novo" className="btn-primary">

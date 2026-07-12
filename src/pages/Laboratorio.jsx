@@ -11,7 +11,7 @@ export default function Laboratorio({ articles, observations }) {
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="space-y-10">
       <div>
         <p className="eyebrow mb-2 flex items-center gap-1.5"><FlaskConical size={12} /> Experimentação</p>
-        <h1 className="font-display text-4xl tracking-wide">Laboratório</h1>
+        <h1 className="font-display text-3xl sm:text-4xl tracking-wide">Laboratório</h1>
         <p className="text-sm text-graphite-500 mt-2 max-w-lg">
           Hipóteses em teste antes de virarem procedimento oficial, e ideias nascidas de Observações de Campo.
         </p>

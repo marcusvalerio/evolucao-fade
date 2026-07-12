@@ -30,7 +30,7 @@ export default function Biblioteca({ articles }) {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <p className="eyebrow mb-2">Sistema de conhecimento</p>
-          <h1 className="font-display text-4xl tracking-wide">Biblioteca</h1>
+          <h1 className="font-display text-3xl sm:text-4xl tracking-wide">Biblioteca</h1>
         </div>
         <Link to="/biblioteca/novo" className="btn-primary">
           <Plus size={16} /> Novo artigo

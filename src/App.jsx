@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense, lazy } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import Sidebar from './components/Sidebar.jsx'
@@ -21,7 +21,9 @@ import ProdutoForm from './pages/ProdutoForm.jsx'
 import CategoriaModulo from './pages/CategoriaModulo.jsx'
 import Laboratorio from './pages/Laboratorio.jsx'
 import ObservacoesDeCampo from './pages/ObservacoesDeCampo.jsx'
-import MinhaEvolucao from './pages/MinhaEvolucao.jsx'
+
+// recharts só é necessário aqui — carregado sob demanda para não pesar o bundle inicial
+const MinhaEvolucao = lazy(() => import('./pages/MinhaEvolucao.jsx'))
 
 export default function App() {
   const [theme, setTheme] = useTheme()
@@ -31,6 +33,7 @@ export default function App() {
   const [observations, setObservations] = useLocalStore('fade-observations', seedObservations)
   const [playbooks, setPlaybooks] = useLocalStore('fade-playbooks', seedPlaybooks)
   const [produtos, setProdutos] = useLocalStore('fade-produtos', seedProdutos)
+  const [readArticles, setReadArticles] = useLocalStore('fade-read-articles', {})
   const location = useLocation()
 
   useEffect(() => {
@@ -60,14 +63,14 @@ export default function App() {
           setTheme={setTheme}
         />
 
-        <main className="flex-1 px-4 sm:px-8 py-8 max-w-6xl w-full mx-auto">
+        <main className="flex-1 px-4 sm:px-8 py-6 sm:py-8 max-w-6xl w-full mx-auto">
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<Dashboard articles={articles} observations={observations} />} />
 
               <Route path="/biblioteca" element={<Biblioteca articles={articles} />} />
               <Route path="/biblioteca/novo" element={<ArtigoForm articles={articles} setArticles={setArticles} />} />
-              <Route path="/biblioteca/:id" element={<ArtigoDetalhe articles={articles} setArticles={setArticles} />} />
+              <Route path="/biblioteca/:id" element={<ArtigoDetalhe articles={articles} setArticles={setArticles} readArticles={readArticles} setReadArticles={setReadArticles} />} />
               <Route path="/biblioteca/:id/editar" element={<ArtigoForm articles={articles} setArticles={setArticles} />} />
 
               <Route path="/playbooks" element={<Playbooks playbooks={playbooks} />} />
@@ -81,7 +84,11 @@ export default function App() {
               <Route path="/produtos/:id/editar" element={<ProdutoForm produtos={produtos} setProdutos={setProdutos} />} />
 
               <Route path="/observacoes" element={<ObservacoesDeCampo observations={observations} setObservations={setObservations} />} />
-              <Route path="/evolucao" element={<MinhaEvolucao articles={articles} observations={observations} />} />
+              <Route path="/evolucao" element={
+                <Suspense fallback={<div className="text-sm text-graphite-500 py-10 text-center">Carregando...</div>}>
+                  <MinhaEvolucao articles={articles} observations={observations} playbooks={playbooks} produtos={produtos} readArticles={readArticles} setReadArticles={setReadArticles} />
+                </Suspense>
+              } />
               <Route path="/laboratorio" element={<Laboratorio articles={articles} observations={observations} />} />
 
               <Route path="/treinamentos" element={

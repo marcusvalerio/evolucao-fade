@@ -1,11 +1,22 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, Pencil, Trash2, CheckSquare } from 'lucide-react'
+import { ArrowLeft, Pencil, Trash2, CheckSquare, BookCheck, Circle } from 'lucide-react'
 import { NIVEIS_CONFIABILIDADE } from '../data/seed.js'
 
-export default function ArtigoDetalhe({ articles, setArticles }) {
+export default function ArtigoDetalhe({ articles, setArticles, readArticles = {}, setReadArticles }) {
   const { id } = useParams()
   const navigate = useNavigate()
   const artigo = articles.find((a) => a.id === id)
+  const lido = Boolean(readArticles[id])
+
+  function toggleLido() {
+    if (!setReadArticles) return
+    setReadArticles((prev) => {
+      const next = { ...prev }
+      if (next[id]) delete next[id]
+      else next[id] = new Date().toISOString().slice(0, 10)
+      return next
+    })
+  }
 
   if (!artigo) {
     return (
@@ -28,13 +39,20 @@ export default function ArtigoDetalhe({ articles, setArticles }) {
 
   return (
     <article className="fade-in max-w-3xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
         <Link to="/biblioteca" className="btn-ghost !px-0 gap-1.5">
           <ArrowLeft size={15} /> Biblioteca
         </Link>
         <div className="flex gap-2">
+          <button
+            onClick={toggleLido}
+            className={lido ? 'btn-primary !py-2' : 'btn-secondary !py-2'}
+          >
+            {lido ? <BookCheck size={14} /> : <Circle size={14} />}
+            <span className="hidden sm:inline">{lido ? 'Lido' : 'Marcar como lido'}</span>
+          </button>
           <Link to={`/biblioteca/${id}/editar`} className="btn-secondary !py-2">
-            <Pencil size={14} /> Editar
+            <Pencil size={14} /> <span className="hidden sm:inline">Editar</span>
           </Link>
           <button onClick={excluir} className="btn-ghost !py-2 !text-leather">
             <Trash2 size={14} />

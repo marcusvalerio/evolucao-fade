@@ -39,7 +39,7 @@ export default function Sidebar({ open, onClose }) {
         />
       )}
       <aside
-        className={`fixed lg:sticky top-0 left-0 h-screen w-72 shrink-0 z-40
+        className={`fixed lg:sticky top-0 left-0 h-screen w-[82vw] max-w-72 shrink-0 z-40
           bg-cream-soft/95 dark:bg-graphite-900/95 backdrop-blur-md
           border-r border-graphite-100 dark:border-graphite-700
           flex flex-col transition-transform duration-300 ease-smooth

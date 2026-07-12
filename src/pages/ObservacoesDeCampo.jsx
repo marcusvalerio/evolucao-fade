@@ -64,7 +64,7 @@ export default function ObservacoesDeCampo({ observations, setObservations }) {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <p className="eyebrow mb-2">Referências de campo</p>
-          <h1 className="font-display text-4xl tracking-wide">Observações de Campo</h1>
+          <h1 className="font-display text-3xl sm:text-4xl tracking-wide">Observações de Campo</h1>
           <p className="text-sm text-graphite-500 mt-2 max-w-lg">
             Registre o que você vê em barbearias, hotéis, cafeterias, restaurantes, lojas e empresas de referência.
           </p>
