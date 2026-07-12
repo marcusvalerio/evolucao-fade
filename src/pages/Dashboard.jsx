@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { BookOpen, MapPinned, ArrowRight, Sparkles } from 'lucide-react'
 import { pageVariants, Reveal, RevealItem, cardHover } from '../components/motion.jsx'
+import AnimatedNumber from '../components/AnimatedNumber.jsx'
 
 function timeAgo(dateStr) {
   const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000)
@@ -10,7 +11,7 @@ function timeAgo(dateStr) {
   return `${diff} dias atrás`
 }
 
-export default function Dashboard({ articles, observations }) {
+export default function Dashboard({ articles, observations, nome }) {
   const recentArticles = [...articles]
     .sort((a, b) => new Date(b.ultimaAtualizacao) - new Date(a.ultimaAtualizacao))
     .slice(0, 4)
@@ -20,11 +21,12 @@ export default function Dashboard({ articles, observations }) {
 
   const hour = new Date().getHours()
   const saudacao = hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite'
+  const primeiroNome = nome ? nome.trim().split(' ')[0] : ''
 
   return (
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="space-y-10">
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
-        <p className="eyebrow mb-2">{saudacao}</p>
+        <p className="eyebrow mb-2">{saudacao}{primeiroNome ? `, ${primeiroNome}` : ''}!</p>
         <h1 className="font-display text-3xl sm:text-5xl tracking-wide text-graphite-900 dark:text-cream">
           O que você quer evoluir hoje?
         </h1>
@@ -44,6 +46,17 @@ export default function Dashboard({ articles, observations }) {
             </Link>
           </RevealItem>
         ))}
+      </Reveal>
+
+      <Reveal className="grid grid-cols-2 gap-3">
+        <RevealItem className="card p-4 flex items-center gap-3">
+          <BookOpen size={16} className="text-imperio shrink-0" />
+          <span className="text-sm"><AnimatedNumber value={articles.length} /> artigos na Biblioteca</span>
+        </RevealItem>
+        <RevealItem className="card p-4 flex items-center gap-3">
+          <MapPinned size={16} className="text-leather shrink-0" />
+          <span className="text-sm"><AnimatedNumber value={observations.length} /> observações registradas</span>
+        </RevealItem>
       </Reveal>
 
       <div className="grid md:grid-cols-2 gap-8">

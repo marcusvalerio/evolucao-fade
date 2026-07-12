@@ -30,8 +30,8 @@ export default {
         wood: '#D9C7A8',
       },
       fontFamily: {
-        display: ['"Barlow Condensed"', 'sans-serif'],
-        body: ['"Inter"', 'sans-serif'],
+        display: ['"Gabarito"', 'sans-serif'],
+        body: ['"Arimo"', 'sans-serif'],
       },
       borderRadius: {
         pill: '999px',

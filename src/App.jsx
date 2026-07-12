@@ -4,6 +4,8 @@ import { AnimatePresence } from 'framer-motion'
 import Sidebar from './components/Sidebar.jsx'
 import Header from './components/Header.jsx'
 import CommandSearch from './components/CommandSearch.jsx'
+import Onboarding from './components/Onboarding.jsx'
+import InstallPrompt from './components/InstallPrompt.jsx'
 import { useLocalStore, useTheme } from './hooks/useLocalStore.js'
 import { seedArticles, seedObservations, seedPlaybooks, seedProdutos } from './data/seed.js'
 import { GraduationCap, Compass, Coffee, Settings2, Megaphone, Building2 } from 'lucide-react'
@@ -34,6 +36,7 @@ export default function App() {
   const [playbooks, setPlaybooks] = useLocalStore('fade-playbooks', seedPlaybooks)
   const [produtos, setProdutos] = useLocalStore('fade-produtos', seedProdutos)
   const [readArticles, setReadArticles] = useLocalStore('fade-read-articles', {})
+  const [nome, setNome] = useLocalStore('fade-user-name', '')
   const location = useLocation()
 
   useEffect(() => {
@@ -53,6 +56,7 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen">
+      {!nome && <Onboarding onComplete={setNome} />}
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex-1 min-w-0 flex flex-col">
@@ -66,7 +70,7 @@ export default function App() {
         <main className="flex-1 px-4 sm:px-8 py-6 sm:py-8 max-w-6xl w-full mx-auto">
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
-              <Route path="/" element={<Dashboard articles={articles} observations={observations} />} />
+              <Route path="/" element={<Dashboard articles={articles} observations={observations} nome={nome} />} />
 
               <Route path="/biblioteca" element={<Biblioteca articles={articles} />} />
               <Route path="/biblioteca/novo" element={<ArtigoForm articles={articles} setArticles={setArticles} />} />
@@ -128,6 +132,7 @@ export default function App() {
         playbooks={playbooks}
         produtos={produtos}
       />
+      {nome && <InstallPrompt />}
     </div>
   )
 }
